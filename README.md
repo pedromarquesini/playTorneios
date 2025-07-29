@@ -1,4 +1,8 @@
 # PlayTorneios - Sistema de Gerenciamento de Campeonatos Amadores
+## Diagrama de classes
+<img width="1415" height="1017" alt="image" src="https://github.com/user-attachments/assets/9ac2f6a9-bc5d-43f7-b3ee-200d66591030" alt="Diagrama de classes"/>
+
+
 ## Ferramentas Utilizadas
 | Categoria          | Ferramenta          |
 |--------------------|---------------------|
