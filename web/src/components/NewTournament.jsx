@@ -4,6 +4,8 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 const NewTournament = () => {
   const [publica, setPublica] = useState(false);
   const [idaVolta, setIdaVolta] = useState(false);
+  const [numTimes, setNumTimes] = useState(4);
+  const [formato, setFormato] = useState('matamata');
 
   return (
     <div className="p-4" style={{ marginTop: '70px', marginLeft: '200px', width: 'calc(100% - 200px)' }}>
@@ -54,15 +56,16 @@ const NewTournament = () => {
           <h6 className="mb-3">Formatos e Regras</h6>
 
           <Form.Group className="mb-3">
-            <Form.Label>Número de times (4-128)</Form.Label>
-            <Form.Range min={4} max={128} />
+            <Form.Label>Número de times: {numTimes}</Form.Label>
+            <Form.Range min={4} max={32} value={numTimes} onChange={(e)=> setNumTimes(e.target.value)}/>
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Formato da competição</Form.Label>
             <Form.Select>
-              <option>Mata-mata</option>
-              <option>Pontos corridos</option>
+              <option value="matamata">Mata-mata</option>
+              <option value="pontosCorridos">Pontos corridos</option>
+              <option value="suico">Suiço</option>
             </Form.Select>
           </Form.Group>
 

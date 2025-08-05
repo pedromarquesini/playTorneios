@@ -3,13 +3,32 @@ import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
 import Header from './components/Header';
 import Dashboard from './Pages/Dashboard/Dashboard';
+import Sidebar from './components/Sidebar';
+import NewTeam from './components/NewTeam';
+import NewTournament from './components/NewTournament';
 
 function App() {
-  return (    
+  return (
     <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/Register" element={<Register />} />   
-        <Route path="/Dashboard" element={<Dashboard />} />     
+      <Route path="/" element={<Login />} />
+      <Route path="/Register" element={<Register />} />
+      <Route path="/Dashboard" element={<Dashboard />} />
+      <Route path="/NewTeam" element={
+        <div className='bg-secondary d-flex'>
+          <Header />
+          <Sidebar />
+          <NewTeam />
+        </div>
+      } />
+      <Route path="*" element={<h1>404 Not Found</h1>} />
+      <Route path="/NewTournament" element={
+        <>
+          <Header />
+          <Sidebar />
+          <NewTournament />
+        </>
+      } />
+
     </Routes>
   )
 }

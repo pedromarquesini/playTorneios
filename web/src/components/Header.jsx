@@ -1,8 +1,7 @@
-import { Navigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import logo2 from '../assets/logo2.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
-
 
 
 const Header = () => {
@@ -15,7 +14,7 @@ const Header = () => {
                 <h1 className="h4">PlayTorneios</h1>
             </div>
             <div>
-                <button className="btn btn-secondary">Adicionar Competição</button>                  
+                <Link to="/dashboard" className="btn btn-secondary">Adicionar Competição</Link>
                 <FontAwesomeIcon icon={faBell} className="ms-3" style={{ cursor: 'pointer', fontSize: '1rem' }} />
                 <FontAwesomeIcon icon={faUser} className="ms-3" style={{ cursor: 'pointer', fontSize: '1rem' }} />
             </div>

@@ -5,7 +5,7 @@ import Sidebar from '../../components/Sidebar';
 import NewTournament from '../../components/NewTournament';
 import NewTeam from '../../components/NewTeam';
 
-const Dashboard = () => {
+const NewTeam = () => {
     const navigate = useNavigate();
     
 
@@ -14,7 +14,7 @@ const Dashboard = () => {
         <div className='bg-secondary d-flex'>
             <Header />
             <Sidebar />
-            <NewTournament />
+            <NewTeam />
         </div>
         
         </>
