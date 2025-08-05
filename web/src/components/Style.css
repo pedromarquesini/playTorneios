@@ -1,0 +1,13 @@
+
+.nav-position{
+    margin-top: 70px;
+    position: fixed;   
+    width: 200px;
+}
+
+.body-position{
+    margin-top: 70px !important;
+    margin-left: 200px;
+    position: fixed;   
+    width: calc(100% - 200px);   
+}
