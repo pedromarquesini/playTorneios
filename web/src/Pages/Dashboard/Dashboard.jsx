@@ -14,7 +14,7 @@ const Dashboard = () => {
         <div className='bg-secondary d-flex'>
             <Header />
             <Sidebar />
-            <NewTournament />
+            <div className='bg-primary vh-100'></div>
         </div>
         
         </>
