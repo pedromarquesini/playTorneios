@@ -10,7 +10,7 @@ const NewTeam = () => {
         setJogadores([...jogadores, '']);
     };
 
-    const removerJogador = (index) => {
+    const handleRemoverJogador = (index) => {
         setJogadores(jogadores.filter((_, i) => i !== index));
     };
 
@@ -67,7 +67,7 @@ const NewTeam = () => {
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <h6 className="mb-0">Jogadores</h6>
                         <Button variant="success" size="sm" onClick={adicionarJogador}>
-                            <FontAwesomeIcon icon={faPlus} /> Jogador
+                            <FontAwesomeIcon icon={faPlus} />
                         </Button>
                     </div>
 
@@ -88,7 +88,6 @@ const NewTeam = () => {
                                 />
                                 <Button variant="danger" onClick={() => handleRemoverJogador(index)}>
                                     <FontAwesomeIcon icon={faTrashAlt} />
-
                                 </Button>
                             </InputGroup>
                         ))}

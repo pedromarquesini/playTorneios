@@ -23,9 +23,11 @@ function App() {
       <Route path="*" element={<h1>404 Not Found</h1>} />
       <Route path="/NewTournament" element={
         <>
-          <Header />
-          <Sidebar />
-          <NewTournament />
+          <div className='bg-secondary d-flex'>
+            <Header />
+            <Sidebar />
+            <NewTournament />
+          </div>
         </>
       } />
 
