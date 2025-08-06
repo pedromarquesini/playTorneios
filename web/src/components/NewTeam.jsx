@@ -71,7 +71,7 @@ const NewTeam = () => {
                         </Button>
                     </div>
 
-                    <div className="border rounded p-3 bg-light">
+                    <div className="border rounded p-3 bg-light" style={{ maxHeight: '350px', overflowY: 'auto' }}>
                         {jogadores.map((jogador, index) => (
                             <InputGroup className="mb-2" key={index}>
                                 <Form.Control

@@ -6,6 +6,46 @@ const NewTournament = () => {
   const [idaVolta, setIdaVolta] = useState(false);
   const [numTimes, setNumTimes] = useState(4);
   const [formato, setFormato] = useState('matamata');
+  const [modalidade, setModalidade] = useState('Futebol');
+  const [nomeCompeticao, setNomeCompeticao] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [logo, setLogo] = useState(null);
+  const [dataInicio, setDataInicio] = useState('');
+  const [dataFim, setDataFim] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      nome: nomeCompeticao,
+      descricao: descricao,
+      modalidade: modalidade,
+      publica: publica,
+      numTimes: numTimes,
+      formato: formato,
+      idaVolta: idaVolta,
+      dataInicio: dataInicio,
+      dataFim: dataFim
+    };
+    try {
+      const response = await fetch('http://localhost:8080/api/competicoes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      if (response.ok) {
+        alert('Competição criada com sucesso!');        
+      } else {
+        alert('Erro ao criar competição.');
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      alert('Erro na comunicação com o servidor.');
+    }
+
+  };
 
   return (
     <div className="p-4" style={{ marginTop: '70px', marginLeft: '200px', width: 'calc(100% - 200px)' }}>
@@ -17,12 +57,12 @@ const NewTournament = () => {
 
           <Form.Group className="mb-3">
             <Form.Label>Nome da competição</Form.Label>
-            <Form.Control placeholder="Campeonato Brasileiro" />
+            <Form.Control placeholder="Campeonato Brasileiro" value={nomeCompeticao} onChange={(e) => setNomeCompeticao(e.target.value)} />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Modalidade</Form.Label>
-            <Form.Select>
+            <Form.Select value={modalidade} onChange={(e) => setModalidade(e.target.value)}>
               <option>Futebol</option>
               <option>Vôlei</option>
               <option>Basquete</option>
@@ -31,12 +71,12 @@ const NewTournament = () => {
 
           <Form.Group className="mb-3">
             <Form.Label>Logo da competição</Form.Label>
-            <Form.Control type="file" />
+            <Form.Control type="file" value={logo} onChange={(e) => setLogo(e.target.files[0])} />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Descrição</Form.Label>
-            <Form.Control as="textarea" rows={2} placeholder="Digite aqui uma breve descrição" />
+            <Form.Control as="textarea" rows={2} placeholder="Digite aqui uma breve descrição" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -62,7 +102,7 @@ const NewTournament = () => {
 
           <Form.Group className="mb-3">
             <Form.Label>Formato da competição</Form.Label>
-            <Form.Select>
+            <Form.Select value={formato} onChange={(e) => setFormato(e.target.value)}>
               <option value="matamata">Mata-mata</option>
               <option value="pontosCorridos">Pontos corridos</option>
               <option value="suico">Suiço</option>
@@ -93,19 +133,19 @@ const NewTournament = () => {
             <Col>
               <Form.Group className="mb-3">
                 <Form.Label>Data de Início</Form.Label>
-                <Form.Control type="date" />
+                <Form.Control type="date" value={dataInicio} onChange={(e) => setDataInicio(e.target.value)} />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group className="mb-3">
                 <Form.Label>Data de Término</Form.Label>
-                <Form.Control type="date" />
+                <Form.Control type="date" value={dataFim} onChange={(e) => setDataFim(e.target.value)} />
               </Form.Group>
             </Col>
           </Row>
         </Col>
         <div className="text-center mt-4">
-        <Button variant="dark">Criar competição</Button>
+        <Button variant="dark" onClick={handleSubmit}>Criar competição</Button>
       </div>
       </Row>      
     </div>
