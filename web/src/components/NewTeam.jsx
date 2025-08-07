@@ -11,9 +11,9 @@ const NewTeam = () => {
     const [competicoes, setCompeticoes] = useState(['']);
     const [nomeTime, setNomeTime] = useState('');
     const [descricao, setDescricao] = useState('');
-    const [logo, setLogo] = useState(null);
     const [competicaoSelecionada, setCompeticaoSelecionada] = useState('');
 
+    // Recupera as competições disponíveis
     useEffect(() => {
         axios.get('http://localhost:8080/api/competicoes')
             .then(response => {
@@ -21,7 +21,6 @@ const NewTeam = () => {
             })
             .catch(error => {
                 console.error('Erro ao buscar competições:', error);
-                alert('Erro ao carregar competições.');
             });
     }, []);
 
@@ -97,9 +96,9 @@ const NewTeam = () => {
                             onChange={(e) => setCompeticaoSelecionada(e.target.value)}
                         >
                             <option value="">Selecione uma competição (opcional)</option>
-                            {competicoes.map((nome, index) => (
-                                <option key={index} value={nome}>
-                                    {nome}
+                            {competicoes.map((comp) => (
+                                <option key={comp.id} value={comp.id}>
+                                    {comp.nome}
                                 </option>
                             ))}
                         </Form.Select>
@@ -107,7 +106,7 @@ const NewTeam = () => {
 
                     <Form.Group className="mb-3">
                         <Form.Label>Logo do time</Form.Label>
-                        <Form.Control type="file" onChange={(e) => setLogo(e.target.files[0])} disabled={true} />
+                        <Form.Control type="file" disabled={true} />
                     </Form.Group>
 
                     <Form.Group className="mb-3">

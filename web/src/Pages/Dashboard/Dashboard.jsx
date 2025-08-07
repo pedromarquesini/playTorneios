@@ -29,7 +29,7 @@ const Dashboard = () => {
                                     <Card.Body>
                                         <FontAwesomeIcon icon={faTrophy} size="2x" className="mb-2 text-primary" />
                                         <Card.Title>Meus Torneios</Card.Title>
-                                        <Button variant="primary" className="mt-2 w-100">Ver</Button>
+                                        <Button variant="primary" className="mt-2 w-100" as={Link} to="/MyTournaments">Ver</Button>
                                     </Card.Body>
                                 </Card>
                             </Col>

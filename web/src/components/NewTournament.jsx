@@ -17,16 +17,19 @@ const NewTournament = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const dataInicioFormatada = new Date(dataInicio).toISOString().split('T')[0];
+    const dataFimFormatada = new Date(dataFim).toISOString().split('T')[0];
+
     const payload = {
       nome: nomeCompeticao,
       descricao: descricao,
       modalidade: modalidade,
       publica: publica,
-      numero_times: numTimes,
+      numeroTimes: numTimes,
       formato: formato,
       idaVolta: idaVolta,
-      dataInicio: dataInicio,
-      dataTermino: dataFim
+      dataInicio: dataInicioFormatada,
+      dataTermino: dataFimFormatada
     };
     try {
       const response = await fetch('http://localhost:8080/api/competicoes', {

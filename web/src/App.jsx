@@ -6,6 +6,7 @@ import Dashboard from './Pages/Dashboard/Dashboard';
 import Sidebar from './components/Sidebar';
 import NewTeam from './components/NewTeam';
 import NewTournament from './components/NewTournament';
+import MyTournaments from './Pages/MyTournaments/MyTournaments';
 
 function App() {
   return (
@@ -30,6 +31,15 @@ function App() {
           </div>
         </>
       } />
+      <Route path='/MyTournaments' element={
+        <>
+          <div className='bg-secondary d-flex '>
+            <Header />
+            <Sidebar />
+            <MyTournaments />
+          </div>
+        </>
+      } />     
 
     </Routes>
   )
