@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const NewTournament = () => {
   const [publica, setPublica] = useState(false);
@@ -21,11 +22,11 @@ const NewTournament = () => {
       descricao: descricao,
       modalidade: modalidade,
       publica: publica,
-      numTimes: numTimes,
+      numero_times: numTimes,
       formato: formato,
       idaVolta: idaVolta,
       dataInicio: dataInicio,
-      dataFim: dataFim
+      dataTermino: dataFim
     };
     try {
       const response = await fetch('http://localhost:8080/api/competicoes', {
@@ -36,7 +37,8 @@ const NewTournament = () => {
         body: JSON.stringify(payload),
       });
       if (response.ok) {
-        alert('Competição criada com sucesso!');        
+        alert('Competição criada com sucesso!');    
+        Link('/dashboard');
       } else {
         alert('Erro ao criar competição.');
       }
@@ -105,7 +107,7 @@ const NewTournament = () => {
             <Form.Select value={formato} onChange={(e) => setFormato(e.target.value)}>
               <option value="matamata">Mata-mata</option>
               <option value="pontosCorridos">Pontos corridos</option>
-              <option value="suico">Suiço</option>
+              {/*<option value="suico">Suiço</option> */}
             </Form.Select>
           </Form.Group>
 

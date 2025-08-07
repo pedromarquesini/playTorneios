@@ -1,17 +1,37 @@
-import React, { useState } from 'react';
 import { Row, Col, Form, Button, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+
 
 const NewTeam = () => {
     const [jogadores, setJogadores] = useState([{ numero: '', nome: '' }]);
+    const [competicoes, setCompeticoes] = useState(['']);
+    const [nomeTime, setNomeTime] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [logo, setLogo] = useState(null);
+    const [competicaoSelecionada, setCompeticaoSelecionada] = useState('');
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/competicoes')
+            .then(response => {
+                setCompeticoes(response.data);
+            })
+            .catch(error => {
+                console.error('Erro ao buscar competições:', error);
+                alert('Erro ao carregar competições.');
+            });
+    }, []);
 
     const adicionarJogador = () => {
-        setJogadores([...jogadores, '']);
+        setJogadores([...jogadores, { numero: '', nome: '' }]);
     };
 
     const handleRemoverJogador = (index) => {
-        setJogadores(jogadores.filter((_, i) => i !== index));
+        const novosJogadores = jogadores.filter((_, i) => i !== index);
+        setJogadores(novosJogadores);
     };
 
     const atualizarNomeJogador = (index, valor) => {
@@ -20,13 +40,41 @@ const NewTeam = () => {
         setJogadores(novosJogadores);
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const payload = {
+            nome: nomeTime,
+            descricao: descricao,
+            competicaoId: competicaoSelecionada ? parseInt(competicaoSelecionada) : null,
+            jogadores: jogadores
+        };
+
+        try {
+            const res = await fetch('http://localhost:8080/api/times', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+            if (res.ok) {
+                alert('Time criado com sucesso!');
+                Link('/dashboard');
+            } else {
+                alert('Erro ao criar time.');
+            }
+        } catch (error) {
+            console.error('Erro na requisição:', error);
+        }
+    };
 
     const handleJogadorChange = (index, campo, valor) => {
-      const novosJogadores = [...jogadores];
-      novosJogadores[index][campo] = valor;
-      setJogadores(novosJogadores);
+        const novosJogadores = [...jogadores];
+        novosJogadores[index][campo] = valor;
+        setJogadores(novosJogadores);
     };
-    
+
 
     return (
         <div className="p-4" style={{ marginTop: '70px', marginLeft: '200px', width: 'calc(100% - 200px)' }}>
@@ -39,27 +87,34 @@ const NewTeam = () => {
 
                     <Form.Group className="mb-3">
                         <Form.Label>Nome do time</Form.Label>
-                        <Form.Control placeholder="Time da Vila" />
+                        <Form.Control placeholder="Time da Vila" value={nomeTime} onChange={(e) => setNomeTime(e.target.value)} />
                     </Form.Group>
 
                     <Form.Group className="mb-3">
                         <Form.Label>Competição</Form.Label>
-                        <Form.Select>
-                            <option>Campeonato Brasileiro</option>
-                            <option>Copa PlayTorneios</option>
+                        <Form.Select
+                            value={competicaoSelecionada}
+                            onChange={(e) => setCompeticaoSelecionada(e.target.value)}
+                        >
+                            <option value="">Selecione uma competição (opcional)</option>
+                            {competicoes.map((nome, index) => (
+                                <option key={index} value={nome}>
+                                    {nome}
+                                </option>
+                            ))}
                         </Form.Select>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
                         <Form.Label>Logo do time</Form.Label>
-                        <Form.Control type="file" />
+                        <Form.Control type="file" onChange={(e) => setLogo(e.target.files[0])} disabled={true} />
                     </Form.Group>
 
                     <Form.Group className="mb-3">
                         <Form.Label>Descrição</Form.Label>
-                        <Form.Control as="textarea" rows={2} placeholder="Digite aqui uma breve descrição" />
+                        <Form.Control as="textarea" rows={2} placeholder="Digite aqui uma breve descrição" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
                     </Form.Group>
-                    
+
                 </Col>
 
                 {/* Coluna 2 - Jogadores */}
@@ -95,7 +150,7 @@ const NewTeam = () => {
                 </Col>
 
                 <div className="text-center mt-4">
-                    <Button variant="dark">Criar time</Button>
+                    <Button variant="dark" onClick={handleSubmit}>Criar time</Button>
                 </div>
             </Row>
         </div>

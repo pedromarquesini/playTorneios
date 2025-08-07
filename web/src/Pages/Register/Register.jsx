@@ -79,7 +79,7 @@ const Register = () => {
               <label className='form-label text-white'>Aceito os termos de serviço</label>
             </div>
 
-            <button type="submit" className="btn btn-success w-100 mt-2 bg-white text-success fw-bold" disabled={!termosAceitos}>
+            <button type="submit" className="btn btn-success w-100 mt-2 bg-white text-success fw-bold" disabled={!termosAceitos || !nome || !email || !senha}>
               Cadastrar
             </button>
 
