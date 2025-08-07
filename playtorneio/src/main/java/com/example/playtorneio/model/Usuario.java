@@ -28,4 +28,8 @@ public class Usuario {
 
     @NotBlank
     private String senha;
+
+    private int quantidadeCompeticoes;
+    private int quantidadeTimes;
+
 }

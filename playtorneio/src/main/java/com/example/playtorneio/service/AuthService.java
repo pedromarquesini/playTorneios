@@ -5,7 +5,6 @@ import com.example.playtorneio.dto.RegistroDTO;
 import com.example.playtorneio.model.Usuario;
 import com.example.playtorneio.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,6 +23,8 @@ public class AuthService {
         usuario.setEmail(registro.getEmail());
         usuario.setNome(registro.getNome());
         usuario.setSenha(registro.getSenha());
+        usuario.setQuantidadeTimes(0);
+        usuario.setQuantidadeCompeticoes(0);
 
         usuarioRepository.save(usuario);
 
