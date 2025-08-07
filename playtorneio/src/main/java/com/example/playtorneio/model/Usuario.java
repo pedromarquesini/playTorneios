@@ -29,7 +29,9 @@ public class Usuario {
     @NotBlank
     private String senha;
 
+    @Column(nullable = false, columnDefinition = "integer default 0")
     private int quantidadeCompeticoes;
-    private int quantidadeTimes;
 
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    private int quantidadeTimes;
 }

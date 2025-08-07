@@ -3,7 +3,6 @@ package com.example.playtorneio.controller;
 import com.example.playtorneio.dto.CompeticaoDTO;
 import com.example.playtorneio.dto.CompeticaoResponseDTO;
 import com.example.playtorneio.model.Competicao;
-import com.example.playtorneio.model.Time;
 import com.example.playtorneio.repository.CompeticaoRepository;
 import com.example.playtorneio.service.CompeticaoService;
 import jakarta.validation.Valid;

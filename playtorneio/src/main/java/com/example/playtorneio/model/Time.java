@@ -26,4 +26,9 @@ public class Time {
 
     @OneToMany(mappedBy = "time", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Jogador> jogadores = new ArrayList<>();
+
+    public void setLogo(String logo) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setLogo'");
+    }
 }

@@ -1,3 +1,4 @@
+import React from 'react';
 import './Dashboard.css';
 import { Container, Row, Col, Card, Button} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

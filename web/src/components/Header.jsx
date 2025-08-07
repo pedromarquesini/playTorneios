@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import logo2 from '../assets/logo2.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
