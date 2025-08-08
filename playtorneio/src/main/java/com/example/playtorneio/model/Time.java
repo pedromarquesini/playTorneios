@@ -1,5 +1,6 @@
 package com.example.playtorneio.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,16 +20,14 @@ public class Time {
 
     private String nome;
     private String descricao;
+    private String logo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "competicao_id", nullable = false)
+    @JsonBackReference
     private Competicao competicao;
 
     @OneToMany(mappedBy = "time", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Jogador> jogadores = new ArrayList<>();
 
-    public void setLogo(String logo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setLogo'");
-    }
 }

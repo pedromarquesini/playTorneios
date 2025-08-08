@@ -8,6 +8,7 @@ import Sidebar from './components/Sidebar';
 import NewTeam from './components/NewTeam';
 import NewTournament from './components/NewTournament';
 import MyTournaments from './Pages/MyTournaments/MyTournaments';
+import CompetitionPage from './Pages/CompetitionPage/CompetitionPage';
 
 function App() {
   return (
@@ -24,24 +25,20 @@ function App() {
       } />
       <Route path="*" element={<h1>404 Not Found</h1>} />
       <Route path="/NewTournament" element={
-        <>
-          <div className='bg-secondary d-flex'>
-            <Header />
-            <Sidebar />
-            <NewTournament />
-          </div>
-        </>
+        <div className='bg-secondary d-flex'>
+          <Header />
+          <Sidebar />
+          <NewTournament />
+        </div>
       } />
       <Route path='/MyTournaments' element={
-        <>
-          <div className='bg-secondary d-flex '>
-            <Header />
-            <Sidebar />
-            <MyTournaments />
-          </div>
-        </>
-      } />     
-
+        <div className='bg-secondary d-flex '>
+          <Header />
+          <Sidebar />
+          <MyTournaments />
+        </div>
+      } />
+      <Route path="/competicao/:id" element={<CompetitionPage />} />
     </Routes>
   )
 }
