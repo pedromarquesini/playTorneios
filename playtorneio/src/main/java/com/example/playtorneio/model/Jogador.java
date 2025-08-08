@@ -1,14 +1,12 @@
 package com.example.playtorneio.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.Data;
 
 @Entity
 @Table(name = "jogadores")
-@Getter
-@Setter
+@Data
 public class Jogador {
 
     @Id
@@ -19,10 +17,8 @@ public class Jogador {
 
     private Integer numero;
 
-    @ManyToOne
-    @JoinColumn(name = "time_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "time_id", nullable = false)
+    @JsonBackReference 
     private Time time;
-
-
 }
-

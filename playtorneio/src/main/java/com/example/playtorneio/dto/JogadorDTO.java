@@ -1,10 +1,8 @@
 package com.example.playtorneio.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class JogadorDTO {
     private String nome;
     private Integer numero;

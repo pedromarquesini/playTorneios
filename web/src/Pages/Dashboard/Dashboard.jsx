@@ -1,94 +1,64 @@
 import React from 'react';
-import './Dashboard.css';
-import { Container, Row, Col, Card, Button} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrophy, faUsers, faUserPlus, faUser, faPlus, faUserTie } from '@fortawesome/free-solid-svg-icons';
- import Header from '../../components/Header';
+import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
-import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faList, faTrophy, faUsers } from '@fortawesome/free-solid-svg-icons';
 
 const Dashboard = () => {
-    const nomeUsuario = "Usuário"; // Substitua pelo nome do usuário logado
+    const navigate = useNavigate();
 
     return (
-        <>
-            <div className='bg-secondary d-flex'>
-                <Header />
+        <div className='bg-light'>
+            <Header />
+            <div className='d-flex'>
                 <Sidebar />
-                <div className='bg-secondary vh-100'>
-                    <Container fluid style={{ marginTop: '70px', marginLeft: '200px', padding: '30px', width: 'calc(100% - 200px)' }}>
-                        
-                        <div className="d-flex align-items-center mb-5 justify-content-center">
-                            <FontAwesomeIcon icon={faUserTie} size="2x" className="me-3 text-white" />
-                            <h3 className="text-white">Bem-vindo, {nomeUsuario}</h3>
-                        </div>
+                <Container fluid className="p-4" style={{ marginTop: '70px', marginLeft: '200px', width: 'calc(100% - 200px)' }}>
+                    <h4 className="mb-4">Painel de Controle</h4>
+                    <Row>
+                        {}
+                        <Col md={6} className="mb-4">
+                            <Card className="shadow-sm">
+                                <Card.Body>
+                                    <Card.Title><FontAwesomeIcon icon={faTrophy} className="me-2" />Competições</Card.Title>
+                                    <Card.Text>
+                                        Crie novas competições ou visualize as existentes.
+                                    </Card.Text>
+                                    {}
+                                    <Button variant="success" className="me-2" onClick={() => navigate('/NewTournament')}>
+                                        <FontAwesomeIcon icon={faPlus} className="me-1" /> Criar Competição
+                                    </Button>
+                                    <Button variant="outline-secondary" onClick={() => navigate('/MyTournaments')}>
+                                        <FontAwesomeIcon icon={faList} className="me-1" /> Ver Torneios
+                                    </Button>
+                                </Card.Body>
+                            </Card>
+                        </Col>
 
-                        
-                        <Row xs={1} md={3} className="g-4">
-                            <Col>
-                                <Card className="text-center shadow-sm h-100">
-                                    <Card.Body>
-                                        <FontAwesomeIcon icon={faTrophy} size="2x" className="mb-2 text-primary" />
-                                        <Card.Title>Meus Torneios</Card.Title>
-                                        <Button variant="primary" className="mt-2 w-100" as={Link} to="/MyTournaments">Ver</Button>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                            <Col>
-                                <Card className="text-center shadow-sm h-100">
-                                    <Card.Body>
-                                        <FontAwesomeIcon icon={faUsers} size="2x" className="mb-2 text-primary" />
-                                        <Card.Title>Meus Times</Card.Title>
-                                        <Button variant="primary" className="mt-2 w-100">Ver</Button>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                            <Col>
-                                <Card className="text-center shadow-sm h-100">
-                                    <Card.Body>
-                                        <FontAwesomeIcon icon={faUser} size="2x" className="mb-2 text-primary" />
-                                        <Card.Title>Meus Jogadores</Card.Title>
-                                        <Button variant="primary" className="mt-2 w-100">Ver</Button>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                            <Col>
-                                <Card className="text-center shadow-sm h-100">
-                                    <Card.Body>
-                                        <FontAwesomeIcon icon={faPlus} size="2x" className="mb-2 text-success" />
-                                        <Card.Title>Adicionar Torneio</Card.Title>
-                                        <Button variant="success" className="mt-2 w-100" as={Link} to="/NewTournament">Adicionar</Button>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                            
-                            <Col>
-                                <Card className="text-center shadow-sm h-100">
-                                    <Card.Body>
-                                        <FontAwesomeIcon icon={faPlus} size="2x" className="mb-2 text-success" />
-                                        <Card.Title>Adicionar Time</Card.Title>
-                                        <Button variant="success" className="mt-2 w-100" as={Link} to="/NewTeam">Adicionar</Button>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                            
-                            <Col>
-                                <Card className="text-center shadow-sm h-100">
-                                    <Card.Body>
-                                        <FontAwesomeIcon icon={faUserPlus} size="2x" className="mb-2 text-success" />
-                                        <Card.Title>Adicionar Jogador</Card.Title>
-                                        <Button variant="success" className="mt-2 w-100">Adicionar</Button>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Container>
-                </div>
+                        {}
+                        <Col md={6} className="mb-4">
+                            <Card className="shadow-sm">
+                                <Card.Body>
+                                    <Card.Title><FontAwesomeIcon icon={faUsers} className="me-2" />Times</Card.Title>
+                                    <Card.Text>
+                                        Adicione novos times e jogadores às suas competições.
+                                    </Card.Text>
+                                    <Button variant="primary" className="me-2" onClick={() => navigate('/NewTeam')}>
+                                        <FontAwesomeIcon icon={faPlus} className="me-1" /> Criar Time
+                                    </Button>
+                                    <Button variant="outline-secondary" onClick={() => navigate('/MyTeams')}>
+                                        <FontAwesomeIcon icon={faList} className="me-1" /> Ver Times
+                                    </Button>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                    {}
+                </Container>
             </div>
-
-        </>
+        </div>
     );
-
-}
+};
 
 export default Dashboard;

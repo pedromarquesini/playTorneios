@@ -1,6 +1,10 @@
 package com.example.playtorneio.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -31,4 +35,8 @@ public class Partida {
     private Integer placarVisitante;
     private boolean finalizada = false;
     private Integer rodada;
+
+    @OneToMany(mappedBy = "partida", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("partida-eventos")
+    private List<Evento> eventos = new ArrayList<>();
 }

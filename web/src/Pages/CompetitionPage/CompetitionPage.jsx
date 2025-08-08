@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Row, Col, Card, ListGroup, Button, Spinner, Modal } from 'react-bootstrap'; // 1. Importe o Modal
+import { Row, Col, Card, ListGroup, Button, Spinner, Modal } from 'react-bootstrap';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import LeagueTable from '../../components/LeagueTable';
 import MatchesList from '../../components/MatchesList';
+import Artilharia from '../../components/Artilharia';
 
 const CompetitionPage = () => {
     const { id } = useParams();
     const [competicao, setCompeticao] = useState(null);
     const [tabela, setTabela] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [showConfirmModal, setShowConfirmModal] = useState(false); // 2. State para controlar o modal
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     const fetchData = useCallback(() => {
         setLoading(true);
@@ -32,7 +33,6 @@ const CompetitionPage = () => {
         fetchData();
     }, [fetchData]);
 
-    // 3. Esta função agora apenas executa a lógica da API
     const confirmGerarPartidas = () => {
         axios.post(`http://localhost:8080/api/partidas/gerar/${id}`)
             .then(() => {
@@ -48,7 +48,7 @@ const CompetitionPage = () => {
                 console.error('Erro ao gerar partidas:', error);
             })
             .finally(() => {
-                setShowConfirmModal(false); // Fecha o modal após a ação
+                setShowConfirmModal(false);
             });
     };
 
@@ -61,7 +61,7 @@ const CompetitionPage = () => {
     }
 
     return (
-        <> {/* Use Fragment para encapsular o JSX e o Modal */}
+        <>
             <div className='bg-light'>
                 <Header />
                 <div className='d-flex'>
@@ -71,7 +71,6 @@ const CompetitionPage = () => {
                             <Col md={8}>
                                 <h2>{competicao.nome}</h2>
                                 <p className="text-muted">{competicao.descricao}</p>
-                                {/* 4. O botão agora apenas abre o modal */}
                                 <Button variant="success" onClick={() => setShowConfirmModal(true)} className="mb-4">
                                     Gerar Partidas
                                 </Button>
@@ -88,13 +87,13 @@ const CompetitionPage = () => {
                                         ))}
                                     </ListGroup>
                                 </Card>
+                                <Artilharia competicaoId={id} />
                             </Col>
                         </Row>
                     </div>
                 </div>
             </div>
 
-            {/* 5. Componente Modal */}
             <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirmar Ação</Modal.Title>

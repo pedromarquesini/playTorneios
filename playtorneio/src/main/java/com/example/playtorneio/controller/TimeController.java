@@ -9,13 +9,13 @@ import com.example.playtorneio.repository.CompeticaoRepository;
 import com.example.playtorneio.repository.TimeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/times")
-@CrossOrigin(origins = "localhost:5173")
 public class TimeController {
 
     private final TimeRepository timeRepository;
@@ -27,7 +27,8 @@ public class TimeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> criarTime(@RequestBody CadastroTimeDTO dto){
+    @Transactional
+    public ResponseEntity<?> criarTime(@RequestBody CadastroTimeDTO dto) {
         Time time = new Time();
         time.setNome(dto.getNome());
         time.setDescricao(dto.getDescricao());
@@ -36,20 +37,29 @@ public class TimeController {
             Competicao competicao = competicaoRepository.findById(dto.getCompeticaoId())
                     .orElseThrow(() -> new RuntimeException("Competição não encontrada"));
             time.setCompeticao(competicao);
+        } else {
+             throw new RuntimeException("É obrigatório associar o time a uma competição.");
         }
 
-        if(dto.getJogadores() !=null){
-            for(JogadorDTO dtoJogador : dto.getJogadores()){
-                Jogador jogador = new Jogador();
-                jogador.setNome(dtoJogador.getNome());
-                jogador.setNumero(dtoJogador.getNumero());
-                jogador.setTime(time);
-                time.getJogadores().add(jogador);
+        if (dto.getJogadores() != null && !dto.getJogadores().isEmpty()) {
+            for (JogadorDTO jogadorDTO : dto.getJogadores()) {
+                if (jogadorDTO.getNome() != null && !jogadorDTO.getNome().isBlank()) {
+                    Jogador jogador = new Jogador();
+                    jogador.setNome(jogadorDTO.getNome());
+                    jogador.setNumero(jogadorDTO.getNumero());
+                    jogador.setTime(time); // Associa o jogador ao time
+                    time.getJogadores().add(jogador);
+                }
             }
         }
 
-        timeRepository.save(time);
+        Time timeSalvo = timeRepository.save(time);
+        return ResponseEntity.status(HttpStatus.CREATED).body(timeSalvo);
+    }
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @GetMapping
+    public ResponseEntity<List<Time>> listarTodosOsTimes() {
+        List<Time> times = timeRepository.findAll();
+        return ResponseEntity.ok(times);
     }
 }

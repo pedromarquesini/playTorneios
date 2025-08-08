@@ -9,6 +9,7 @@ import NewTeam from './components/NewTeam';
 import NewTournament from './components/NewTournament';
 import MyTournaments from './Pages/MyTournaments/MyTournaments';
 import CompetitionPage from './Pages/CompetitionPage/CompetitionPage';
+import MyTeamsPage from './Pages/MyTeams/MyTeams';
 
 function App() {
   return (
@@ -37,6 +38,14 @@ function App() {
           <Sidebar />
           <MyTournaments />
         </div>
+      } />
+      {/* --- 2. Adicione a Rota Corretamente --- */}
+      <Route path='/MyTeams' element={
+          <div className='bg-secondary d-flex '>
+              <Header />
+              <Sidebar />
+              <MyTeamsPage />
+          </div>
       } />
       <Route path="/competicao/:id" element={<CompetitionPage />} />
     </Routes>
