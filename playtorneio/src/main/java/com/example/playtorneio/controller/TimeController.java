@@ -37,6 +37,13 @@ public class TimeController {
             .map(mapper::toTimeDTO).collect(Collectors.toList()));
     }
 
+    @GetMapping("/disponiveis")
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<TimeDTO>> listarTimesDisponiveis() {
+        return ResponseEntity.ok(timeRepository.findByCompeticaoIsNull().stream()
+            .map(mapper::toTimeDTO).collect(Collectors.toList()));
+    }
+
     @GetMapping("/{id}")
     @Transactional(readOnly = true)
     public ResponseEntity<TimeDTO> buscarTimePorId(@PathVariable Long id) {

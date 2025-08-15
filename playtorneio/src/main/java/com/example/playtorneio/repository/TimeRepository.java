@@ -2,6 +2,8 @@ package com.example.playtorneio.repository;
 
 import com.example.playtorneio.model.Time;
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
 public interface TimeRepository extends JpaRepository<Time, Long> {
+    List<Time> findByCompeticaoIsNull();
 }

@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Row, Col, Card, ListGroup, Button, Spinner, Modal, Container } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import LeagueTable from '../../components/LeagueTable';
 import MatchesList from '../../components/MatchesList';
 import Artilharia from '../../components/Artilharia';
+import AddExistingTeamModal from '../../components/AddExistingTeamModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const CompetitionPage = () => {
     const { id } = useParams();
@@ -12,6 +16,8 @@ const CompetitionPage = () => {
     const [tabela, setTabela] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [showAddTeamModal, setShowAddTeamModal] = useState(false);
+    const user = JSON.parse(localStorage.getItem('user'));
 
     const fetchData = useCallback(() => {
         setLoading(true);
@@ -34,50 +40,52 @@ const CompetitionPage = () => {
     const confirmGerarPartidas = () => {
         axios.post(`http://localhost:8080/api/partidas/gerar/${id}`)
             .then(() => {
-                alert('Partidas geradas com sucesso!');
+                toast.success('Partidas geradas com sucesso!');
                 fetchData();
             })
             .catch(error => {
-                if (error.response && error.response.data && error.response.data.message) {
-                    alert(`Erro: ${error.response.data.message}`);
-                } else {
-                    alert('Ocorreu um erro ao gerar as partidas.');
-                }
-                console.error('Erro ao gerar partidas:', error);
+                const errorMsg = error.response?.data?.message || 'Ocorreu um erro ao gerar as partidas.';
+                toast.error(`Erro: ${errorMsg}`);
             })
-            .finally(() => {
-                setShowConfirmModal(false);
-            });
+            .finally(() => setShowConfirmModal(false));
     };
 
-    if (loading) {
-        return <Container fluid className="d-flex justify-content-center align-items-center"><Spinner animation="border" /></Container>;
-    }
-
-    if (!competicao) {
-        return <Container fluid><h2>Competição não encontrada.</h2></Container>;
+    if (loading || !competicao) {
+        return <Container fluid className="text-center"><Spinner animation="border" /></Container>;
     }
 
     return (
         <>
             <Container fluid>
                 <Row>
-                    <Col md={8}>
-                        <h2>{competicao.nome}</h2>
-                        <p className="text-muted">{competicao.descricao}</p>
-                        <Button variant="success" onClick={() => setShowConfirmModal(true)} className="mb-4">
-                            Gerar Partidas
-                        </Button>
-
-                        <MatchesList partidas={competicao.partidas} onPlacarUpdate={fetchData} />
+                    <Col lg={8}>
+                        <div className="mb-4">
+                            <h2 className="page-title">{competicao.nome}</h2>
+                            <p className="text-secondary">{competicao.descricao}</p>
+                            {user && user.role === 'ORGANIZADOR' && (
+                                <Button variant="success" onClick={() => setShowConfirmModal(true)} className="btn-action">
+                                    Gerar Partidas
+                                </Button>
+                            )}
+                        </div>
+                        <MatchesList partidas={competicao.partidas} onUpdate={fetchData} />
                         <LeagueTable tabela={tabela} loading={loading} />
                     </Col>
-                    <Col md={4}>
-                        <Card>
-                            <Card.Header as="h5">Times Inscritos ({competicao.times.length})</Card.Header>
+                    <Col lg={4}>
+                        <Card className="shadow-sm mb-4">
+                            <Card.Header as="h5" className="d-flex justify-content-between align-items-center">
+                                Times Inscritos ({competicao.times?.length || 0})
+                                {user && user.role === 'ORGANIZADOR' && (
+                                    <Button variant="outline-success" size="sm" onClick={() => setShowAddTeamModal(true)}>
+                                        <FontAwesomeIcon icon={faPlus} /> Adicionar Time
+                                    </Button>
+                                )}
+                            </Card.Header>
                             <ListGroup variant="flush">
-                                {competicao.times.map(time => (
-                                    <ListGroup.Item key={time.id}>{time.nome}</ListGroup.Item>
+                                {competicao.times?.map(time => (
+                                    <ListGroup.Item key={time.id} action as={Link} to={`/time/${time.id}/perfil`} className="card-hover">
+                                        {time.nome}
+                                    </ListGroup.Item>
                                 ))}
                             </ListGroup>
                         </Card>
@@ -85,19 +93,18 @@ const CompetitionPage = () => {
                     </Col>
                 </Row>
             </Container>
-
+            <AddExistingTeamModal 
+                show={showAddTeamModal} 
+                onHide={() => setShowAddTeamModal(false)} 
+                competicaoId={id} 
+                onTeamAdded={fetchData} 
+            />
             <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Confirmar Ação</Modal.Title>
-                </Modal.Header>
+                <Modal.Header closeButton><Modal.Title>Confirmar Ação</Modal.Title></Modal.Header>
                 <Modal.Body>Tem certeza que deseja gerar os jogos? Esta ação não pode ser desfeita.</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowConfirmModal(false)}>
-                        Cancelar
-                    </Button>
-                    <Button variant="success" onClick={confirmGerarPartidas}>
-                        Confirmar
-                    </Button>
+                    <Button variant="secondary" onClick={() => setShowConfirmModal(false)}>Cancelar</Button>
+                    <Button variant="success" onClick={confirmGerarPartidas}>Confirmar</Button>
                 </Modal.Footer>
             </Modal>
         </>

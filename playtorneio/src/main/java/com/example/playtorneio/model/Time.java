@@ -24,7 +24,7 @@ public class Time {
     private String logo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "competicao_id")
+    @JoinColumn(name = "competicao_id", nullable = true)
     private Competicao competicao;
 
     @OneToMany(mappedBy = "time", cascade = CascadeType.ALL, orphanRemoval = true)

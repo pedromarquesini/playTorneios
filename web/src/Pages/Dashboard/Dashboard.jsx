@@ -10,7 +10,7 @@ const Dashboard = () => {
 
     return (
         <Container fluid>
-            <h4 className="mb-4">Painel de Controlo</h4>
+            <h4 className="mb-4">Painel de Controle</h4>
             <Row>
                 <Col md={6} className="mb-4">
                     <Card className="shadow-sm h-100">

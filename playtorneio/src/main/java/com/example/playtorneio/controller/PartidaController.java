@@ -7,6 +7,7 @@ import com.example.playtorneio.model.Partida;
 import com.example.playtorneio.service.PartidaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,5 +35,12 @@ public class PartidaController {
     public ResponseEntity<PartidaDetalheDTO> finalizarPartida(@PathVariable Long id) {
         Partida partidaFinalizada = partidaService.finalizarPartida(id);
         return ResponseEntity.ok(mapper.toPartidaDetalheDTO(partidaFinalizada));
+    }
+
+    @PostMapping("/gerar/{idCompeticao}")
+    @PreAuthorize("hasAuthority('ORGANIZADOR')")
+    public ResponseEntity<Void> gerarPartidas(@PathVariable Long idCompeticao) {
+        partidaService.gerarPartidasPontosCorridos(idCompeticao);
+        return ResponseEntity.ok().build();
     }
 }
