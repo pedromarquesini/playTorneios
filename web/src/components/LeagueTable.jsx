@@ -7,7 +7,7 @@ const LeagueTable = ({ tabela, loading }) => {
     }
 
     if (!tabela || tabela.length === 0) {
-        return <p>A tabela de classificação ainda não está disponível.</p>;
+        return <p className="mt-4">A tabela de classificação ainda não está disponível.</p>;
     }
 
     return (

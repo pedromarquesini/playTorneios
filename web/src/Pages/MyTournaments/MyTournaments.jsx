@@ -1,8 +1,7 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { ListGroup, Spinner } from 'react-bootstrap';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { ListGroup, Spinner, Container } from 'react-bootstrap';
+import axios from 'axios';
 
 const MyTournaments = () => {
     const [torneios, setTorneios] = useState([]);
@@ -22,14 +21,14 @@ const MyTournaments = () => {
 
     if (loading) {
         return (
-            <div className="text-center p-4" style={{ marginTop: '80px', marginLeft: '210px' }}>
-                <Spinner animation="border" variant="primary" />
-            </div>
+            <Container fluid className="text-center">
+                <Spinner animation="border" />
+            </Container>
         );
     }
 
     return (
-        <div className="p-4" style={{ marginTop: '70px', marginLeft: '200px', width: 'calc(100% - 200px)' }}>
+        <Container fluid>
             <h4 className="mb-4">Meus Torneios</h4>
             {torneios.length === 0 ? (
                 <p>Nenhum torneio encontrado.</p>
@@ -50,7 +49,7 @@ const MyTournaments = () => {
                     ))}
                 </ListGroup>
             )}
-        </div>
+        </Container>
     );
 };
 

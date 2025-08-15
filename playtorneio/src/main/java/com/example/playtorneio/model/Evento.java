@@ -28,11 +28,4 @@ public class Evento {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "time_id")
     private Time time;
-
-    // Enum para definir os tipos de eventos possíveis
-    public enum TipoEvento {
-        GOL,
-        CARTAO_AMARELO,
-        CARTAO_VERMELHO
-    }
 }

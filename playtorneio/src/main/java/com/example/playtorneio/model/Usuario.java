@@ -1,37 +1,32 @@
 package com.example.playtorneio.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String nome;
-
-    @Email
-    @NotBlank
-    @Column(unique = true)
     private String email;
-
-    @NotBlank
     private String senha;
 
-    @Column(nullable = false, columnDefinition = "integer default 0")
-    private int quantidadeCompeticoes;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    @Column(nullable = false, columnDefinition = "integer default 0")
+    private int quantidadeCompeticoes;
     private int quantidadeTimes;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Jogador> perfisJogador = new ArrayList<>();
 }

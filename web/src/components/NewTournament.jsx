@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const NewTournament = () => {
     const navigate = useNavigate();
@@ -32,12 +33,12 @@ const NewTournament = () => {
         try {
             const response = await axios.post('http://localhost:8080/api/competicoes', payload);
             if (response.status === 200 || response.status === 201) {
-                alert('Competição criada com sucesso!');
+                toast.success('Competição criada com sucesso!');
                 navigate('/MyTournaments');
             }
         } catch (error) {
             console.error('Erro na requisição:', error);
-            alert('Erro ao criar competição.');
+            toast.error('Erro ao criar competição.');
         }
     };
 

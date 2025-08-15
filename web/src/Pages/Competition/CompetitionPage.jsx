@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Row, Col, Card, ListGroup, Button, Spinner, Modal } from 'react-bootstrap';
-import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar';
+import { Row, Col, Card, ListGroup, Button, Spinner, Modal, Container } from 'react-bootstrap';
 import LeagueTable from '../../components/LeagueTable';
 import MatchesList from '../../components/MatchesList';
 import Artilharia from '../../components/Artilharia';
@@ -53,46 +51,40 @@ const CompetitionPage = () => {
     };
 
     if (loading) {
-        return <div className="d-flex justify-content-center align-items-center vh-100"><Spinner animation="border" /></div>;
+        return <Container fluid className="d-flex justify-content-center align-items-center"><Spinner animation="border" /></Container>;
     }
 
     if (!competicao) {
-        return <h2>Competição não encontrada.</h2>;
+        return <Container fluid><h2>Competição não encontrada.</h2></Container>;
     }
 
     return (
         <>
-            <div className='bg-light'>
-                <Header />
-                <div className='d-flex'>
-                    <Sidebar />
-                    <div className="p-4" style={{ marginTop: '70px', marginLeft: '200px', width: 'calc(100% - 200px)' }}>
-                        <Row>
-                            <Col md={8}>
-                                <h2>{competicao.nome}</h2>
-                                <p className="text-muted">{competicao.descricao}</p>
-                                <Button variant="success" onClick={() => setShowConfirmModal(true)} className="mb-4">
-                                    Gerar Partidas
-                                </Button>
+            <Container fluid>
+                <Row>
+                    <Col md={8}>
+                        <h2>{competicao.nome}</h2>
+                        <p className="text-muted">{competicao.descricao}</p>
+                        <Button variant="success" onClick={() => setShowConfirmModal(true)} className="mb-4">
+                            Gerar Partidas
+                        </Button>
 
-                                <MatchesList partidas={competicao.partidas} onPlacarUpdate={fetchData} />
-                                <LeagueTable tabela={tabela} loading={loading} />
-                            </Col>
-                            <Col md={4}>
-                                <Card>
-                                    <Card.Header as="h5">Times Inscritos ({competicao.times.length})</Card.Header>
-                                    <ListGroup variant="flush">
-                                        {competicao.times.map(time => (
-                                            <ListGroup.Item key={time.id}>{time.nome}</ListGroup.Item>
-                                        ))}
-                                    </ListGroup>
-                                </Card>
-                                <Artilharia competicaoId={id} />
-                            </Col>
-                        </Row>
-                    </div>
-                </div>
-            </div>
+                        <MatchesList partidas={competicao.partidas} onPlacarUpdate={fetchData} />
+                        <LeagueTable tabela={tabela} loading={loading} />
+                    </Col>
+                    <Col md={4}>
+                        <Card>
+                            <Card.Header as="h5">Times Inscritos ({competicao.times.length})</Card.Header>
+                            <ListGroup variant="flush">
+                                {competicao.times.map(time => (
+                                    <ListGroup.Item key={time.id}>{time.nome}</ListGroup.Item>
+                                ))}
+                            </ListGroup>
+                        </Card>
+                        <Artilharia competicaoId={id} />
+                    </Col>
+                </Row>
+            </Container>
 
             <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)} centered>
                 <Modal.Header closeButton>

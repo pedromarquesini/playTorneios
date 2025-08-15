@@ -2,6 +2,7 @@ package com.example.playtorneio.service;
 
 import com.example.playtorneio.dto.LoginDTO;
 import com.example.playtorneio.dto.RegistroDTO;
+import com.example.playtorneio.model.Role;
 import com.example.playtorneio.model.Usuario;
 import com.example.playtorneio.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,12 @@ public class AuthService {
         usuario.setSenha(registro.getSenha());
         usuario.setQuantidadeTimes(0);
         usuario.setQuantidadeCompeticoes(0);
+
+        if (registro.getRole() == null) {
+            usuario.setRole(Role.PUBLICO);
+        } else {
+            usuario.setRole(registro.getRole());
+        }
 
         usuarioRepository.save(usuario);
 

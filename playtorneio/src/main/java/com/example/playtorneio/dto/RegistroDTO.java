@@ -1,5 +1,7 @@
 package com.example.playtorneio.dto;
 
+import com.example.playtorneio.model.Role;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -15,4 +17,6 @@ public class RegistroDTO {
 
     @NotBlank
     private String senha;
+
+    private Role role;
 }

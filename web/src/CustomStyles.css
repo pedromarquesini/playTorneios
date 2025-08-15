@@ -1,0 +1,42 @@
+
+body {
+    background-color: #f0f2f5;
+}
+
+.card-hover {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: none;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.btn-action {
+    font-size: 1.1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-action .svg-inline--fa {
+    margin-right: 10px;
+}
+
+.sidebar-link {
+    transition: background-color 0.2s ease-in-out, padding-left 0.2s ease-in-out;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+.sidebar-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    padding-left: 20px;
+}
+
+.app-header {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}

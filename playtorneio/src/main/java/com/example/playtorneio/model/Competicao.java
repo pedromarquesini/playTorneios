@@ -1,11 +1,9 @@
 package com.example.playtorneio.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "competicoes")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Competicao {
 
     @Id
@@ -36,10 +33,8 @@ public class Competicao {
     private List<String> criteriosDesempate;
 
     @OneToMany(mappedBy = "competicao", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<Time> times = new ArrayList<>();
-
+    
     @OneToMany(mappedBy = "competicao", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("competicao-partidas")
     private List<Partida> partidas = new ArrayList<>();
 }

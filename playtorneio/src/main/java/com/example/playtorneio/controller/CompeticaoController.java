@@ -3,19 +3,18 @@ package com.example.playtorneio.controller;
 import com.example.playtorneio.dto.CompeticaoDTO;
 import com.example.playtorneio.dto.CompeticaoResponseDTO;
 import com.example.playtorneio.dto.TabelaPontosDTO;
+import com.example.playtorneio.mapper.EntityMapper;
 import com.example.playtorneio.model.Competicao;
 import com.example.playtorneio.repository.CompeticaoRepository;
 import com.example.playtorneio.service.CompeticaoService;
 import com.example.playtorneio.service.TabelaService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,20 +24,28 @@ public class CompeticaoController {
     private final CompeticaoService service;
     private final CompeticaoRepository repository;
     private final TabelaService tabelaService;
+    private final EntityMapper mapper;
 
     @GetMapping
+    @Transactional(readOnly = true)
     public List<CompeticaoResponseDTO> listaCompeticoes() {
         return repository.findAll().stream().map(c -> new CompeticaoResponseDTO(
-                    c.getId(),
-                    c.getNome(),
-                    c.getDescricao(),
-                    c.getDataInicio() != null ? c.getDataInicio().toString() : "Sem data de início",
-                    c.getDataTermino() != null ? c.getDataTermino().toString() : "Sem data de término",
-                    c.getPublica() != null ? c.getPublica().toString() : "Não definido",
+                    c.getId(), c.getNome(), c.getDescricao(),
+                    c.getDataInicio() != null ? c.getDataInicio().toString() : "N/A",
+                    c.getDataTermino() != null ? c.getDataTermino().toString() : "N/A",
+                    c.getPublica() != null ? c.getPublica().toString() : "N/A",
                     c.getModalidade(),
-                    c.getNumeroTimes() != null ? c.getNumeroTimes().toString() : "Número de times não definido")
-                )
-                .collect(Collectors.toList());
+                    c.getNumeroTimes() != null ? c.getNumeroTimes().toString() : "N/A")
+                ).collect(Collectors.toList());
+    }
+    
+    @GetMapping("/{id}")
+    @Transactional(readOnly = true)
+    public ResponseEntity<CompeticaoDTO> buscarCompeticaoPorId(@PathVariable Long id) {
+        return repository.findById(id)
+            .map(mapper::toCompeticaoDTO)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -47,18 +54,10 @@ public class CompeticaoController {
         return ResponseEntity.ok(salva);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Competicao> buscarCompeticaoPorId(@PathVariable Long id) {
-        Optional<Competicao> competicao = repository.findById(id);
-
-        return competicao.map(ResponseEntity::ok)
-            .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
     @GetMapping("/{id}/tabela")
+    @Transactional(readOnly = true)
     public ResponseEntity<List<TabelaPontosDTO>> getTabela(@PathVariable Long id) {
         List<TabelaPontosDTO> tabela = tabelaService.calcularTabela(id);
-        
         return ResponseEntity.ok(tabela);
     }
 }
