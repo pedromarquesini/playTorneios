@@ -1,0 +1,71 @@
+package com.example.playtorneio.controller;
+
+import com.example.playtorneio.dto.CompeticaoDTO;
+import com.example.playtorneio.dto.CompeticaoResponseDTO;
+import com.example.playtorneio.dto.TabelaPontosDTO;
+import com.example.playtorneio.dto.TimeDTO;
+import com.example.playtorneio.mapper.EntityMapper;
+import com.example.playtorneio.model.Competicao;
+import com.example.playtorneio.model.Time;
+import com.example.playtorneio.repository.CompeticaoRepository;
+import com.example.playtorneio.service.CompeticaoService;
+import com.example.playtorneio.service.TabelaService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api/competicoes")
+@RequiredArgsConstructor
+public class CompeticaoController {
+    private final CompeticaoService service;
+    private final CompeticaoRepository repository;
+    private final TabelaService tabelaService;
+    private final EntityMapper mapper;
+
+    @GetMapping
+    @Transactional(readOnly = true)
+    public List<CompeticaoResponseDTO> listaCompeticoes() {
+        return repository.findAll().stream().map(c -> new CompeticaoResponseDTO(
+                    c.getId(), c.getNome(), c.getDescricao(),
+                    c.getDataInicio() != null ? c.getDataInicio().toString() : "N/A",
+                    c.getDataTermino() != null ? c.getDataTermino().toString() : "N/A",
+                    c.getPublica() != null ? c.getPublica().toString() : "N/A",
+                    c.getModalidade(),
+                    c.getNumeroTimes() != null ? c.getNumeroTimes().toString() : "N/A")
+                ).collect(Collectors.toList());
+    }
+    
+    @GetMapping("/{id}")
+    @Transactional(readOnly = true)
+    public ResponseEntity<CompeticaoDTO> buscarCompeticaoPorId(@PathVariable Long id) {
+        return repository.findById(id)
+            .map(mapper::toCompeticaoDTO)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<?> criarCompeticao(@RequestBody @Valid CompeticaoDTO dto) {
+        Competicao salva = service.salvar(dto);
+        return ResponseEntity.ok(salva);
+    }
+
+    @GetMapping("/{id}/tabela")
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<TabelaPontosDTO>> getTabela(@PathVariable Long id) {
+        List<TabelaPontosDTO> tabela = tabelaService.calcularTabela(id);
+        return ResponseEntity.ok(tabela);
+    }
+
+    @PutMapping("/{idCompeticao}/times/{idTime}")
+    public ResponseEntity<TimeDTO> vincularTime(@PathVariable Long idCompeticao, @PathVariable Long idTime) {
+        Time timeVinculado = service.vincularTimeExistente(idCompeticao, idTime);
+        return ResponseEntity.ok(mapper.toTimeDTO(timeVinculado));
+    }
+}
